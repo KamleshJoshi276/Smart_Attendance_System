@@ -6,7 +6,7 @@ Flask-SQLAlchemy==3.0.5
 python-dotenv==1.0.0
 PyMySQL==1.1.0
 numpy==1.26.4
-opencv-contrib-python==4.8.1.78
-Pillow==10.0.0
+opencv-contrib-python==4.11.0.86
+Pillow==11.3.0
 eventlet==0.33.3
 gunicorn==23.0.0

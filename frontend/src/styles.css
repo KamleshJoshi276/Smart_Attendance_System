@@ -1,0 +1,820 @@
+/* ============================= */
+/* Professional Theme v2.0 */
+/* ============================= */
+
+:root{
+
+--primary:#2563eb;
+--secondary:#1d4ed8;
+--success:#16a34a;
+--danger:#dc2626;
+--warning:#f59e0b;
+
+--background:#eef4ff;
+
+--card:#ffffff;
+
+--text:#111827;
+
+--border:#dbe4ff;
+
+--shadow:0 12px 35px rgba(0,0,0,.08);
+
+}
+
+body{
+
+margin:0;
+
+font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+
+background:linear-gradient(135deg,#edf4ff,#dbeafe,#eef2ff);
+
+min-height:100vh;
+
+color:var(--text);
+
+}
+
+.app-shell{
+
+min-height:100vh;
+
+padding:35px;
+
+}
+
+.page-card{
+
+background:#ffffff;
+
+border-radius:22px;
+
+padding:30px;
+
+box-shadow:0 15px 40px rgba(0,0,0,0.12);
+
+border:1px solid #e5e7eb;
+
+animation:fadeIn .5s ease;
+
+}
+
+@keyframes fadeIn{
+
+from{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:none;
+
+}
+
+}
+
+.section-title{
+
+font-size:34px;
+
+font-weight:700;
+
+color:#1e3a8a;
+
+margin-bottom:10px;
+
+}
+
+.notice{
+
+padding:15px;
+
+
+border-radius:12px;
+
+font-weight:600;
+
+}
+
+.notice.success{
+
+background:#dcfce7;
+
+color:#166534;
+
+}
+
+.notice.error{
+
+background:#fee2e2;
+
+color:#991b1b;
+
+}
+
+button{
+
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+color:white;
+
+border:none;
+
+padding:12px 22px;
+
+border-radius:10px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+button:hover{
+
+transform:translateY(-2px);
+
+box-shadow:0 8px 18px rgba(37,99,235,.3);
+
+}
+
+button.secondary{
+
+background:#f3f4f6;
+
+color:#111827;
+
+}
+
+button.secondary:hover{
+
+background:#e5e7eb;
+
+}
+
+.link-button{
+
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+color:white;
+
+padding:12px 18px;
+
+border-radius:10px;
+
+text-decoration:none;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+.link-button:hover{
+
+transform:translateY(-2px);
+
+}
+
+.link-button.secondary{
+
+background:#f3f4f6;
+
+color:#111827;
+
+}
+
+input{
+
+padding:13px;
+
+border-radius:10px;
+
+border:1px solid #d1d5db;
+
+transition:.3s;
+
+}
+
+input:focus{
+
+outline:none;
+
+border-color:#2563eb;
+
+box-shadow:0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+/* ================================= */
+/* Dashboard Cards */
+/* ================================= */
+
+.card-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+
+gap:22px;
+
+margin-top:20px;
+
+}
+
+.card{
+
+background:#fff;
+
+border-radius:20px;
+
+padding:22px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+transition:.35s;
+
+border:1px solid #edf2ff;
+
+}
+
+.card:hover{
+
+transform:translateY(-6px);
+
+box-shadow:0 18px 35px rgba(37,99,235,.18);
+
+}
+
+.card h3{
+
+margin:0 0 12px;
+
+font-size:20px;
+
+color:#1d4ed8;
+
+}
+
+.card p{
+
+color:#4b5563;
+
+font-size:15px;
+
+}
+
+/* ================================= */
+/* Student Card */
+/* ================================= */
+
+.student-card{
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.student-card::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:0;
+
+height:6px;
+
+width:100%;
+
+background:linear-gradient(90deg,#2563eb,#06b6d4);
+
+}
+
+.student-row{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+}
+
+.avatar{
+
+width:90px;
+
+height:90px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:4px solid #dbeafe;
+
+transition:.3s;
+
+}
+
+.avatar:hover{
+
+transform:scale(1.08);
+
+}
+
+/* ================================= */
+/* Search Box */
+/* ================================= */
+
+.search-box{
+
+width:320px;
+
+padding:13px 16px;
+
+border-radius:12px;
+
+border:1px solid #d1d5db;
+
+background:white;
+
+transition:.3s;
+
+}
+
+.search-box:focus{
+
+border-color:#2563eb;
+
+box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+/* ================================= */
+/* Statistics */
+/* ================================= */
+
+.stat-value{
+
+font-size:38px;
+
+font-weight:700;
+
+color:#2563eb;
+
+margin-top:10px;
+
+}
+
+/* ================================= */
+/* Top Bar */
+/* ================================= */
+
+.top-bar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+flex-wrap:wrap;
+
+gap:18px;
+
+margin-bottom:25px;
+
+}
+
+.action-row{
+
+display:flex;
+
+gap:12px;
+
+flex-wrap:wrap;
+
+}
+
+/* ================================= */
+/* Table */
+/* ================================= */
+
+.table-wrapper{
+
+overflow:auto;
+
+border-radius:18px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+background:white;
+
+}
+
+thead{
+
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+color:white;
+
+}
+
+th{
+
+padding:16px;
+
+font-size:15px;
+
+}
+
+td{
+
+padding:16px;
+
+border-bottom:1px solid #edf2ff;
+
+}
+
+tbody tr{
+
+transition:.25s;
+
+}
+
+tbody tr:hover{
+
+background:#f8fbff;
+
+}
+
+/* ================================= */
+/* Delete Button */
+/* ================================= */
+
+.btn-delete{
+
+background:#dc2626;
+
+}
+
+.btn-delete:hover{
+
+background:#b91c1c;
+
+}
+
+/* ================================= */
+/* Edit Button */
+/* ================================= */
+
+.btn-edit{
+
+background:#f59e0b;
+
+}
+
+.btn-edit:hover{
+
+background:#d97706;
+
+}
+/* ========================================= */
+/* Camera Section */
+/* ========================================= */
+
+.camera-preview{
+
+width:100%;
+
+height:340px;
+
+border-radius:20px;
+
+background:#000;
+
+object-fit:cover;
+
+border:5px solid #dbeafe;
+
+box-shadow:0 15px 35px rgba(0,0,0,.15);
+
+transition:.35s;
+
+}
+
+.camera-preview:hover{
+
+transform:scale(1.02);
+
+}
+
+/* ========================================= */
+/* Preview Image */
+/* ========================================= */
+
+.preview-box{
+
+margin-top:20px;
+
+padding:20px;
+
+background:#fff;
+
+border-radius:20px;
+
+box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+animation:fadePreview .4s ease;
+
+}
+
+.preview-image{
+
+width:100%;
+
+border-radius:18px;
+
+max-height:300px;
+
+object-fit:cover;
+
+}
+
+@keyframes fadePreview{
+
+from{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:none;
+
+}
+
+}
+
+/* ========================================= */
+/* Form */
+/* ========================================= */
+
+.form-field{
+
+margin-bottom:18px;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.form-field label{
+
+font-weight:700;
+
+margin-bottom:8px;
+
+color:#1e3a8a;
+
+}
+
+/* ========================================= */
+/* Login/Register Animation */
+/* ========================================= */
+
+.grid-2{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+
+gap:30px;
+
+align-items:start;
+
+}
+
+/* ========================================= */
+/* Nice Scrollbar */
+/* ========================================= */
+
+::-webkit-scrollbar{
+
+width:10px;
+
+height:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+background:#edf2ff;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:#2563eb;
+
+border-radius:10px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+background:#1d4ed8;
+
+}
+
+/* ========================================= */
+/* Floating Animation */
+/* ========================================= */
+
+.student-card{
+
+animation:floatCard .35s ease;
+
+}
+
+@keyframes floatCard{
+
+from{
+
+opacity:0;
+
+transform:translateY(25px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:none;
+
+}
+
+}
+
+/* ========================================= */
+/* Image Hover */
+/* ========================================= */
+
+img{
+
+transition:.35s;
+
+}
+
+img:hover{
+
+transform:scale(1.04);
+
+}
+
+/* ========================================= */
+/* Mobile Responsive */
+/* ========================================= */
+
+@media(max-width:900px){
+
+.page-card{
+
+margin:15px;
+
+padding:20px;
+
+}
+
+.top-bar{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.action-row{
+
+width:100%;
+
+}
+
+.action-row button,
+
+.action-row a{
+
+width:100%;
+
+}
+
+.search-box{
+
+width:100%;
+
+}
+
+.avatar{
+
+width:75px;
+
+height:75px;
+
+}
+
+.section-title{
+
+font-size:28px;
+}
+
+}
+
+/* ========================================= */
+/* Footer Shadow */
+/* ========================================= */
+
+.page-card{
+
+margin-bottom:40px;
+
+}
+
+/* ========================================= */
+/* Loading Animation */
+/* ========================================= */
+
+.loading{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+padding:50px;
+
+font-size:20px;
+
+font-weight:bold;
+
+color:#2563eb;
+
+}
+
+/* ========================================= */
+/* Success Animation */
+/* ========================================= */
+
+.notice.success{
+
+animation:pop .3s ease;
+
+}
+
+@keyframes pop{
+
+0%{
+
+transform:scale(.8);
+
+opacity:0;
+
+}
+
+100%{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}

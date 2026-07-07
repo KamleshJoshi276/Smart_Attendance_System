@@ -9,4 +9,4 @@ numpy==1.26.4
 opencv-contrib-python==4.8.1.78
 Pillow==10.0.0
 eventlet==0.33.3
-
+gunicorn==23.0.0

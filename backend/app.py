@@ -44,8 +44,12 @@ def create_app():
         return jsonify({'message': 'Resource not found'}), 404
 
     return app
-
+app = create_app()
 
 if __name__ == '__main__':
-    app = create_app()
-    socketio.run(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
+    socketio.run(
+        app,
+        host='0.0.0.0',
+        port=int(os.environ.get('PORT', 5000)),
+        debug=True
+    )

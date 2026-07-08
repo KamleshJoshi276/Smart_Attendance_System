@@ -9,16 +9,19 @@ from backend.routes.attendance import attendance_bp
 from backend.routes.admin import admin_bp
 from backend.services.face_verification import ensure_face_directories, train_recognizer
 
-
 def create_app():
     app = Flask(__name__, static_folder='../frontend/build', static_url_path='/')
+
+    print("STATIC FOLDER:", app.static_folder)
+    print("INDEX EXISTS:", os.path.exists(os.path.join(app.static_folder, "index.html")))
+
     app.config.from_object(Config)
     init_extensions(app)
 
     with app.app_context():
-     ensure_face_directories()
-     # db.create_all()   # Commented for TiDB
-     train_recognizer()
+        ensure_face_directories()
+        # db.create_all()   # Commented for TiDB
+        train_recognizer()
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(attendance_bp)
@@ -38,7 +41,6 @@ def create_app():
         if os.path.exists(os.path.join(app.static_folder, path)):
             return send_from_directory(app.static_folder, path)
         return send_from_directory(app.static_folder, 'index.html')
-
     @app.errorhandler(404)
     def handle_404(e):
         return jsonify({'message': 'Resource not found'}), 404

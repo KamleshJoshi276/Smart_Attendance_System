@@ -16,9 +16,9 @@ def create_app():
     init_extensions(app)
 
     with app.app_context():
-        ensure_face_directories()
-        db.create_all()
-        train_recognizer()
+     ensure_face_directories()
+     # db.create_all()   # Commented for TiDB
+     train_recognizer()
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(attendance_bp)

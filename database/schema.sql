@@ -1,6 +1,4 @@
-CREATE DATABASE IF NOT EXISTS smart_attendance CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE smart_attendance;
-
+USE test;
 CREATE TABLE IF NOT EXISTS students (
   id INT PRIMARY KEY AUTO_INCREMENT,
   student_id VARCHAR(64) NOT NULL UNIQUE,

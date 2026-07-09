@@ -130,3 +130,5 @@ const CameraCapture = forwardRef(function CameraCapture(
     </div>
   );
 });
+
+export default CameraCapture;

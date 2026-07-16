@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+
 import LoginForm from './components/LoginForm';
 import TeacherLogin from './components/TeacherLogin';
 import StudentAttendance from './components/StudentAttendance';
@@ -9,9 +10,11 @@ import StudentRegistration from './components/StudentRegistration';
 import TeacherAttendance from './components/TeacherAttendance';
 import StudentList from './components/StudentList';
 import EditStudent from "./components/EditStudent";
+
 import { getCurrentUser } from './auth';
 
 function App() {
+
   const [user, setUser] = useState(getCurrentUser());
 
   useEffect(() => {
@@ -20,48 +23,110 @@ function App() {
 
   return (
     <div className="app-shell">
+
       <Routes>
-        <Route path="/" element={<Navigate to="/student/login" replace />} />
-        <Route path="/student/login" element={<LoginForm onAuth={() => setUser(getCurrentUser())} />} />
-        <Route path="/student/register" element={<StudentRegistration />} />
-        <Route path="/teacher/login" element={<TeacherLogin onAuth={() => setUser(getCurrentUser())} />} />
-        <Route path="/teacher/register" element={<TeacherRegistration />} />
-        <Route path="/student/attendance" element={
-          <ProtectedRoute user={user} type="student">
-            <StudentAttendance />
-          </ProtectedRoute>
-        } />
-        <Route path="/teacher/dashboard" element={
-          <ProtectedRoute user={user} type="teacher">
-            <TeacherDashboard />
-          </ProtectedRoute>
-        } />
-        <Route path="/teacher/attendance" element={
-          <ProtectedRoute user={user} type="teacher">
-            <TeacherAttendance />
-          </ProtectedRoute>
-        } />
-        <Route path="/teacher/students" element={
-          <ProtectedRoute user={user} type="teacher">
-            <StudentList />
-          </ProtectedRoute>
-        } />
-        <Route path="/teacher/edit-student/:id" element={
-         <ProtectedRoute user={user} type="teacher">
-          <EditStudent />
-         </ProtectedRoute>
-        }/>
-        <Route path="*" element={<Navigate to="/" replace />} />
+
+        {/* Home */}
+        <Route
+          path="/"
+          element={<Navigate to="/engineer/login" replace />}
+        />
+
+        {/* Engineer */}
+        <Route
+          path="/engineer/login"
+          element={<LoginForm onAuth={() => setUser(getCurrentUser())} />}
+        />
+
+        <Route
+          path="/engineer/register"
+          element={<StudentRegistration />}
+        />
+
+        <Route
+          path="/engineer/attendance"
+          element={
+            <ProtectedRoute user={user} type="student">
+              <StudentAttendance />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin */}
+        <Route
+          path="/admin/login"
+          element={<TeacherLogin onAuth={() => setUser(getCurrentUser())} />}
+        />
+
+        <Route
+          path="/admin/register"
+          element={<TeacherRegistration />}
+        />
+
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute user={user} type="teacher">
+              <TeacherDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/attendance"
+          element={
+            <ProtectedRoute user={user} type="teacher">
+              <TeacherAttendance />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/engineers"
+          element={
+            <ProtectedRoute user={user} type="teacher">
+              <StudentList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/edit-engineer/:id"
+          element={
+            <ProtectedRoute user={user} type="teacher">
+              <EditStudent />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Invalid URL */}
+        <Route
+          path="*"
+          element={<Navigate to="/" replace />}
+        />
+
       </Routes>
+
     </div>
   );
 }
 
 function ProtectedRoute({ user, type, children }) {
-  if (!user || user.type !== type) {
-    return <Navigate to={`/${type}/login`} replace />;
+
+  if (!user) {
+    return <Navigate to="/" replace />;
   }
+
+  if (type === "student" && user.type !== "student") {
+    return <Navigate to="/engineer/login" replace />;
+  }
+
+  if (type === "teacher" && user.type !== "teacher") {
+    return <Navigate to="/admin/login" replace />;
+  }
+
   return children;
+
 }
 
 export default App;

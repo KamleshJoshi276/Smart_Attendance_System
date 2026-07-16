@@ -46,7 +46,7 @@ export default function EditStudent() {
 
       if (!student) {
 
-        alert("Student not found.");
+        alert("Engineer not found.");
 
         navigate("/teacher/students");
 
@@ -70,7 +70,7 @@ export default function EditStudent() {
 
       console.error(error);
 
-      alert("Unable to load student.");
+      alert("Unable to load engineer.");
 
     } finally {
 
@@ -102,7 +102,7 @@ export default function EditStudent() {
 
       setMessage({
         type: "error",
-        text: "Student ID and Name are required."
+        text: "Engineer ID and Name are required."
       });
 
       return;
@@ -135,7 +135,7 @@ export default function EditStudent() {
 
       setMessage({
         type: "success",
-        text: "Student updated successfully."
+        text: "Engineer updated successfully."
       });
 
       setTimeout(() => {
@@ -174,7 +174,7 @@ export default function EditStudent() {
 
         <div className="card">
 
-          <h2>Loading Student...</h2>
+          <h2>Loading Engineer...</h2>
 
         </div>
 
@@ -190,11 +190,11 @@ export default function EditStudent() {
 
         <div>
           <h1 className="section-title">
-            Edit Student
+            Edit Engineer
           </h1>
 
           <p className="notice">
-            Update student information
+            Update engineer information
           </p>
         </div>
 
@@ -227,7 +227,7 @@ export default function EditStudent() {
         >
 
           <div className="form-field">
-            <label>Student ID</label>
+            <label>Engineer ID</label>
 
             <input
               value={form.student_id}
@@ -241,7 +241,7 @@ export default function EditStudent() {
           </div>
 
           <div className="form-field">
-            <label>Student Name</label>
+            <label>Engineer Name</label>
 
             <input
               value={form.name}
@@ -321,7 +321,7 @@ export default function EditStudent() {
 
               <img
                 src={capturedImage}
-                alt="Student"
+                alt="Engineer"
                 className="preview-image"
               />
 

@@ -31,7 +31,7 @@ async function loadStudents() {
 
   } catch (error) {
     console.error(error);
-    alert("Unable to load students.");
+    alert("Unable to load engineers.");
   } finally {
     setLoading(false);
   }
@@ -67,7 +67,7 @@ async function loadStudents() {
 
       await loadStudents();
 
-      alert("Student deleted successfully.");
+      alert("Engineer deleted successfully.");
 
     } catch (error) {
 
@@ -75,7 +75,7 @@ async function loadStudents() {
 
       alert(
         error?.response?.data?.message ||
-        "Unable to delete student."
+        "Unable to delete engineer."
       );
 
     }
@@ -97,7 +97,7 @@ async function loadStudents() {
 
         <div>
           <h1 className="section-title">
-            Registered Students
+            Registered Engineers
           </h1>
 
           <p className="notice">
@@ -109,7 +109,7 @@ async function loadStudents() {
 
           <input
             type="text"
-            placeholder="Search Student..."
+            placeholder="Search Engineer..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
             style={{
@@ -149,7 +149,7 @@ async function loadStudents() {
 
         <div className="card">
 
-          <h2>Loading Students...</h2>
+          <h2>Loading Engineers...</h2>
 
         </div>
 
@@ -157,7 +157,7 @@ async function loadStudents() {
 
         <div className="card">
 
-          <h2>No Students Found</h2>
+          <h2>No Engineers Found</h2>
 
         </div>
 
@@ -212,9 +212,9 @@ async function loadStudents() {
                  onClick={() =>
                  navigate(`/teacher/edit-student/${student.id}`)
                  }
->
+                >
                    ✏ Edit
-                 </button>
+                </button>
                 <button
                   style={{
                     background: "#dc3545",

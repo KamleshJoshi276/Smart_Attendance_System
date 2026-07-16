@@ -15,10 +15,10 @@ export default function TeacherRegistration() {
 
     try {
       await registerTeacher(form);
-      setMessage({ type: 'success', text: 'Teacher registered successfully. You can sign in now.' });
+      setMessage({ type: 'success', text: 'Admin registered successfully. You can sign in now.' });
       setTimeout(() => navigate('/teacher/login'), 1000);
     } catch (error) {
-      setMessage({ type: 'error', text: error.response?.data?.message || 'Teacher registration failed' });
+      setMessage({ type: 'error', text: error.response?.data?.message || 'Admin registration failed' });
     } finally {
       setLoading(false);
     }
@@ -28,8 +28,8 @@ export default function TeacherRegistration() {
     <main className="page-card">
       <div className="top-bar">
         <div>
-          <h1 className="section-title">Teacher Registration</h1>
-          <p className="notice">Create a teacher account to manage attendance and student records.</p>
+          <h1 className="section-title">Admin Registration</h1>
+          <p className="notice">Create an admin account to manage attendance and engineer records.</p>
         </div>
         <Link className="link-button secondary" to="/teacher/login">Back to login</Link>
       </div>
@@ -39,8 +39,8 @@ export default function TeacherRegistration() {
       <div className="grid-2">
         <form onSubmit={handleSubmit} className="card">
           <div className="form-field">
-            <label>Teacher ID</label>
-            <input value={form.teacher_id} onChange={(e) => setForm(prev => ({ ...prev, teacher_id: e.target.value }))} placeholder="T1001" />
+            <label>Admin ID</label>
+            <input value={form.teacher_id} onChange={(e) => setForm(prev => ({ ...prev, teacher_id: e.target.value }))} placeholder="A1001" />
           </div>
           <div className="form-field">
             <label>Name</label>
@@ -50,15 +50,15 @@ export default function TeacherRegistration() {
             <label>Password</label>
             <input type="password" value={form.password} onChange={(e) => setForm(prev => ({ ...prev, password: e.target.value }))} placeholder="••••••••" />
           </div>
-          <button type="submit" disabled={loading}>{loading ? 'Creating account...' : 'Register Teacher'}</button>
+          <button type="submit" disabled={loading}>{loading ? 'Creating account...' : 'Register Admin'}</button>
         </form>
 
         <div className="card">
           <h3>What you can do</h3>
-          <p>After registration, you can sign in to review attendance, monitor statistics, view registered students, and export reports.</p>
+          <p>After registration, you can sign in to review attendance, monitor statistics, view registered engineers, and export reports.</p>
           <div className="action-row" style={{ marginTop: 16 }}>
-            <Link className="link-button" to="/teacher/login">Teacher Login</Link>
-            <Link className="link-button secondary" to="/student/login">Student Login</Link>
+            <Link className="link-button" to="/teacher/login">Admin Login</Link>
+            <Link className="link-button secondary" to="/student/login">Engineer Login</Link>
           </div>
         </div>
       </div>

@@ -37,12 +37,12 @@ export default function TeacherAttendance() {
     <main className="page-card">
       <div className="top-bar">
         <div>
-          <h1 className="section-title">Attendance Records</h1>
+          <h1 className="section-title">Admin Attendance Records</h1>
           <p className="notice">Logged in as {user?.name} ({user?.identifier})</p>
         </div>
         <div className="action-row">
           <Link className="link-button secondary" to="/teacher/dashboard">Dashboard</Link>
-          <Link className="link-button secondary" to="/teacher/students">Students</Link>
+          <Link className="link-button secondary" to="/teacher/students">Engineers</Link>
           <button className="secondary" onClick={handleLogout}>Logout</button>
         </div>
       </div>
@@ -50,8 +50,8 @@ export default function TeacherAttendance() {
       <div className="card">
         <h3>Search attendance</h3>
         <div className="grid-2">
-          <input value={filters.student_name} onChange={(e) => setFilters(prev => ({ ...prev, student_name: e.target.value }))} placeholder="Search by name" />
-          <input value={filters.student_id} onChange={(e) => setFilters(prev => ({ ...prev, student_id: e.target.value }))} placeholder="Search by student ID" />
+          <input value={filters.student_name} onChange={(e) => setFilters(prev => ({ ...prev, student_name: e.target.value }))} placeholder="Search by engineer name" />
+          <input value={filters.student_id} onChange={(e) => setFilters(prev => ({ ...prev, student_id: e.target.value }))} placeholder="Search by engineer ID" />
         </div>
         <div className="grid-2" style={{ marginTop: 12 }}>
           <input type="date" value={filters.date} onChange={(e) => setFilters(prev => ({ ...prev, date: e.target.value }))} />
@@ -65,8 +65,8 @@ export default function TeacherAttendance() {
         <table>
           <thead>
             <tr>
-              <th>Student Name</th>
-              <th>Student ID</th>
+              <th>Engineer Name</th>
+              <th>Engineer ID</th>
               <th>Date</th>
               <th>Time</th>
               <th>Attendance Image</th>

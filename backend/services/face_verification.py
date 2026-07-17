@@ -6,7 +6,7 @@ import numpy as np
 from backend.config import Config
 from backend.services.utils import ensure_directories
 
-CASCADE_PATH = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+CASCADE_PATH = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
 FACE_CASCADE = cv2.CascadeClassifier(CASCADE_PATH)
 CONFIDENCE_THRESHOLD = 80.0
 
@@ -17,8 +17,8 @@ def ensure_face_directories():
 
 
 def decode_base64_image(image_base64: str) -> np.ndarray | None:
-    if ',' in image_base64:
-        image_base64 = image_base64.split(',', 1)[1]
+    if "," in image_base64:
+        image_base64 = image_base64.split(",", 1)[1]
     try:
         image_data = base64.b64decode(image_base64)
         image_array = np.frombuffer(image_data, dtype=np.uint8)
@@ -43,12 +43,13 @@ def extract_face(image: np.ndarray) -> np.ndarray | None:
 def load_label_map() -> dict[str, int] | None:
     if not os.path.exists(Config.FACE_LABELS_PATH):
         return None
-    with open(Config.FACE_LABELS_PATH, 'r', encoding='utf-8') as f:
+    with open(Config.FACE_LABELS_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
 def save_label_map(label_map: dict[str, int]) -> None:
-    with open(Config.FACE_LABELS_PATH, 'w', encoding='utf-8') as f:
+    ensure_face_directories()
+    with open(Config.FACE_LABELS_PATH, "w", encoding="utf-8") as f:
         json.dump(label_map, f)
 
 
@@ -70,6 +71,8 @@ def train_recognizer() -> bool:
         if not student.profile_image or not os.path.exists(student.profile_image):
             continue
         image = cv2.imread(student.profile_image)
+        if image is None:
+            continue
         face = extract_face(image)
         if face is None:
             continue
@@ -80,6 +83,9 @@ def train_recognizer() -> bool:
         labels.append(label_map[student.student_id])
 
     if not samples or not labels:
+        if os.path.exists(Config.FACE_MODEL_PATH):
+            os.remove(Config.FACE_MODEL_PATH)
+        save_label_map({})
         return False
 
     recognizer = create_recognizer()

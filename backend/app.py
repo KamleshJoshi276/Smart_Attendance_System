@@ -11,6 +11,7 @@ from backend.routes.auth import auth_bp
 from backend.routes.attendance import attendance_bp
 from backend.routes.admin import admin_bp
 from backend.services.face_verification import ensure_face_directories, train_recognizer
+from backend.services.sync_service import ensure_database_schema, sync_student_profile_images
 
 
 def create_app():
@@ -23,6 +24,8 @@ def create_app():
     init_extensions(app)
 
     with app.app_context():
+        db.create_all()
+        ensure_database_schema()
         ensure_face_directories()
 
         # Default Admin 1
@@ -45,6 +48,7 @@ def create_app():
 
         db.session.commit()
 
+        sync_student_profile_images()
         train_recognizer()
 
     app.register_blueprint(auth_bp)

@@ -9,7 +9,8 @@ class Student(db.Model):
     student_id = db.Column(db.String(64), nullable=False, unique=True, index=True)
     name = db.Column(db.String(120), nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
-    profile_image = db.Column(db.String(256), nullable=True)
+    profile_image = db.Column(db.String(512), nullable=True)
+    cloudinary_image_url = db.Column(db.String(512), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     attendances = db.relationship('Attendance', backref='student', lazy=True)
 

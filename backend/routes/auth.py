@@ -6,6 +6,7 @@ from backend.extensions import db
 from backend.models import Student, Teacher
 from backend.services.utils import save_base64_image, ensure_directories
 from backend.services.face_verification import train_recognizer
+from backend.services.cloudinary_service import upload_local_image
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
@@ -33,7 +34,19 @@ def register_student():
         return jsonify({'message': 'Student ID already registered'}), 409
 
     image_path = save_base64_image(profile_image, 'profile', filename=student_id)
-    student = Student(student_id=student_id, name=name, profile_image=image_path)
+
+    cloudinary_url = None
+    try:
+        cloudinary_url = upload_local_image(image_path, public_id=student_id)
+    except Exception:
+        cloudinary_url = None
+
+    student = Student(
+        student_id=student_id,
+        name=name,
+        profile_image=image_path,
+        cloudinary_image_url=cloudinary_url,
+    )
     student.set_password(password)
     db.session.add(student)
     db.session.commit()
@@ -78,7 +91,10 @@ def login():
     )
     profile_url = None
     if user_type == 'student':
-        profile_url = request.host_url.rstrip('/') + '/uploads/profile/' + os.path.basename(user.profile_image)
+        if getattr(user, 'cloudinary_image_url', None):
+            profile_url = user.cloudinary_image_url
+        elif getattr(user, 'profile_image', None):
+            profile_url = request.host_url.rstrip('/') + '/uploads/profile/' + os.path.basename(user.profile_image)
     return jsonify({
         'access_token': token,
         'user': {

@@ -10,6 +10,7 @@ from backend.extensions import init_extensions, db, socketio
 from backend.routes.auth import auth_bp
 from backend.routes.attendance import attendance_bp
 from backend.routes.admin import admin_bp
+from backend.services.cloudinary_service import configure_cloudinary
 from backend.services.face_verification import ensure_face_directories, train_recognizer
 from backend.services.sync_service import ensure_database_schema, sync_student_profile_images
 
@@ -22,6 +23,12 @@ def create_app():
 
     app.config.from_object(Config)
     init_extensions(app)
+
+    cloudinary_configured = configure_cloudinary()
+    if cloudinary_configured:
+        print("Cloudinary configured successfully")
+    else:
+        print("Cloudinary configuration missing")
 
     with app.app_context():
         db.create_all()

@@ -1,4 +1,5 @@
 import os
+import traceback
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
 
@@ -6,7 +7,7 @@ from backend.extensions import db
 from backend.models import Student, Teacher
 from backend.services.utils import save_base64_image, ensure_directories
 from backend.services.face_verification import train_recognizer
-from backend.services.cloudinary_service import upload_local_image
+from backend.services.cloudinary_service import upload_base64_image
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
@@ -35,11 +36,11 @@ def register_student():
 
     image_path = save_base64_image(profile_image, 'profile', filename=student_id)
 
-    cloudinary_url = None
     try:
-        cloudinary_url = upload_local_image(image_path, public_id=student_id)
+        cloudinary_url = upload_base64_image(profile_image, public_id=student_id)
     except Exception:
-        cloudinary_url = None
+        traceback.print_exc()
+        return jsonify({'message': 'Cloudinary upload failed. See server logs.'}), 500
 
     student = Student(
         student_id=student_id,

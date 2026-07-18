@@ -5,13 +5,28 @@ from urllib.request import urlopen
 import cloudinary
 import cloudinary.uploader
 
+_cloudinary_configured = None
+
 
 def configure_cloudinary():
+    global _cloudinary_configured
+    if _cloudinary_configured is not None:
+        return _cloudinary_configured
+
     cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME", "").strip()
     api_key = os.getenv("CLOUDINARY_API_KEY", "").strip()
     api_secret = os.getenv("CLOUDINARY_API_SECRET", "").strip()
 
-    if not all([cloud_name, api_key, api_secret]):
+    missing = []
+    if not cloud_name:
+        missing.append("CLOUDINARY_CLOUD_NAME")
+    if not api_key:
+        missing.append("CLOUDINARY_API_KEY")
+    if not api_secret:
+        missing.append("CLOUDINARY_API_SECRET")
+
+    if missing:
+        _cloudinary_configured = False
         return False
 
     cloudinary.config(
@@ -20,6 +35,7 @@ def configure_cloudinary():
         api_secret=api_secret,
         secure=True,
     )
+    _cloudinary_configured = True
     return True
 
 
@@ -29,7 +45,9 @@ def is_cloudinary_configured():
 
 def upload_base64_image(image_base64, public_id):
     if not is_cloudinary_configured():
-        return None
+        raise RuntimeError(
+            "Cloudinary configuration missing. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET."
+        )
 
     if "," in image_base64:
         image_base64 = image_base64.split(",", 1)[1]
@@ -42,7 +60,12 @@ def upload_base64_image(image_base64, public_id):
         resource_type="image",
     )
 
-    return result.get("secure_url")
+    secure_url = result.get("secure_url")
+    if not secure_url:
+        raise RuntimeError(f"Cloudinary upload failed, no secure_url returned. Response: {result}")
+
+    print(f"[Cloudinary] Upload successful: {secure_url}")
+    return secure_url
 
 
 def upload_local_image(local_path, public_id=None):

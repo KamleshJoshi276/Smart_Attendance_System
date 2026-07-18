@@ -1,4 +1,5 @@
 import os
+import traceback
 from flask import Blueprint, request, jsonify, current_app, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from datetime import datetime
@@ -9,6 +10,7 @@ from backend.extensions import db
 from backend.models import Student, Attendance
 from backend.services.utils import save_base64_image
 from backend.services.face_verification import train_recognizer
+from backend.services.cloudinary_service import upload_base64_image
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/api/admin')
 
@@ -41,7 +43,20 @@ def add_student():
         return jsonify({'message': 'Student already exists'}), 409
 
     image_path = save_base64_image(profile_image, 'profile', filename=student_id)
-    student = Student(student_id=student_id, name=name, profile_image=image_path)
+    
+    try:
+        cloudinary_data = upload_base64_image(profile_image, public_id=student_id)
+    except Exception:
+        traceback.print_exc()
+        return jsonify({'message': 'Cloudinary upload failed. See server logs.'}), 500
+    
+    student = Student(
+        student_id=student_id,
+        name=name,
+        profile_image=image_path,
+        cloudinary_asset_id=cloudinary_data.get('asset_id'),
+        cloudinary_public_id=cloudinary_data.get('public_id'),
+    )
     student.set_password(password)
     db.session.add(student)
     db.session.commit()
@@ -71,6 +86,13 @@ def edit_student(student_id):
         student.set_password(data['password'])
     if data.get('profile_image'):
         student.profile_image = save_base64_image(data['profile_image'], 'profile', filename=student.student_id)
+        try:
+            cloudinary_data = upload_base64_image(data['profile_image'], public_id=student.student_id)
+            student.cloudinary_asset_id = cloudinary_data.get('asset_id')
+            student.cloudinary_public_id = cloudinary_data.get('public_id')
+        except Exception:
+            traceback.print_exc()
+            return jsonify({'message': 'Cloudinary upload failed. See server logs.'}), 500
 
     db.session.commit()
     train_recognizer()

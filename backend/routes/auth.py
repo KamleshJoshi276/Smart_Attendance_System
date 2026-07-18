@@ -37,7 +37,7 @@ def register_student():
     image_path = save_base64_image(profile_image, 'profile', filename=student_id)
 
     try:
-        cloudinary_url = upload_base64_image(profile_image, public_id=student_id)
+        cloudinary_data = upload_base64_image(profile_image, public_id=student_id)
     except Exception:
         traceback.print_exc()
         return jsonify({'message': 'Cloudinary upload failed. See server logs.'}), 500
@@ -46,7 +46,8 @@ def register_student():
         student_id=student_id,
         name=name,
         profile_image=image_path,
-        cloudinary_image_url=cloudinary_url,
+        cloudinary_asset_id=cloudinary_data.get('asset_id'),
+        cloudinary_public_id=cloudinary_data.get('public_id'),
     )
     student.set_password(password)
     db.session.add(student)
@@ -92,9 +93,7 @@ def login():
     )
     profile_url = None
     if user_type == 'student':
-        if getattr(user, 'cloudinary_image_url', None):
-            profile_url = user.cloudinary_image_url
-        elif getattr(user, 'profile_image', None):
+        if getattr(user, 'profile_image', None):
             profile_url = request.host_url.rstrip('/') + '/uploads/profile/' + os.path.basename(user.profile_image)
     return jsonify({
         'access_token': token,

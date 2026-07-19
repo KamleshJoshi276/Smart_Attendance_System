@@ -56,20 +56,20 @@ def upload_base64_image(image_base64, public_id):
         "data:image/jpeg;base64," + image_base64,
         folder="smart_attendance/profile",
         public_id=public_id,
-        type="private",
+        type="upload",
         overwrite=True,
         resource_type="image",
     )
 
-    asset_id = result.get("asset_id")
+    secure_url = result.get("secure_url")
     uploaded_public_id = result.get("public_id")
     
-    if not asset_id or not uploaded_public_id:
-        raise RuntimeError(f"Cloudinary upload failed, missing asset_id or public_id. Response: {result}")
+    if not secure_url or not uploaded_public_id:
+        raise RuntimeError(f"Cloudinary upload failed, missing secure_url or public_id. Response: {result}")
 
-    print(f"[Cloudinary] Upload successful: asset_id={asset_id}, public_id={uploaded_public_id}")
+    print(f"[Cloudinary] Upload successful: {secure_url}")
     return {
-        "asset_id": asset_id,
+        "secure_url": secure_url,
         "public_id": uploaded_public_id,
     }
 
@@ -87,59 +87,34 @@ def upload_local_image(local_path, public_id=None):
         local_path,
         folder="smart_attendance/profile",
         public_id=public_id,
-        type="private",
+        type="upload",
         overwrite=True,
         resource_type="image",
     )
 
-    asset_id = result.get("asset_id")
+    secure_url = result.get("secure_url")
     uploaded_public_id = result.get("public_id")
     
-    if asset_id and uploaded_public_id:
+    if secure_url and uploaded_public_id:
         return {
-            "asset_id": asset_id,
+            "secure_url": secure_url,
             "public_id": uploaded_public_id,
         }
     
     return None
 
 
-def download_private_image(asset_id, public_id, destination_path):
-    """
-    Download a private image from Cloudinary using authenticated API.
-    Private assets require authentication and cannot be accessed via public URLs.
-    """
-    if not is_cloudinary_configured() or not asset_id or not public_id:
+def download_image_to_local(image_url, destination_path):
+    if not image_url:
         return False
 
     try:
-        import urllib.request
-        import base64
-        
         os.makedirs(os.path.dirname(destination_path), exist_ok=True)
-        
-        cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME", "").strip()
-        api_key = os.getenv("CLOUDINARY_API_KEY", "").strip()
-        
-        download_url = f"https://api.cloudinary.com/v1_1/{cloud_name}/image/download?asset_id={asset_id}"
-        
-        credentials = base64.b64encode(f"{api_key}:".encode()).decode()
-        
-        request = urllib.request.Request(
-            download_url,
-            headers={"Authorization": f"Basic {credentials}"}
-        )
-        
-        with urllib.request.urlopen(request) as response, open(destination_path, "wb") as destination:
+        with urlopen(image_url) as response, open(destination_path, "wb") as destination:
             shutil.copyfileobj(response, destination)
-        
         return True
-    except Exception as e:
-        print(f"[Cloudinary] Failed to download private image {asset_id}: {e}")
+    except Exception:
         return False
-
-
-def download_image_to_local(image_url, destination_path):
     if not image_url:
         return False
 

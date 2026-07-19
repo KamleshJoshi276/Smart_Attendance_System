@@ -46,7 +46,7 @@ def register_student():
         student_id=student_id,
         name=name,
         profile_image=image_path,
-        cloudinary_asset_id=cloudinary_data.get('asset_id'),
+        cloudinary_secure_url=cloudinary_data.get('secure_url'),
         cloudinary_public_id=cloudinary_data.get('public_id'),
     )
     student.set_password(password)

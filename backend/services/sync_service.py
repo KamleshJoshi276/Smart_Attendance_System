@@ -4,7 +4,7 @@ from sqlalchemy import text
 from backend.config import Config
 from backend.extensions import db
 from backend.models import Student
-from backend.services.cloudinary_service import download_image_to_local, upload_local_image, download_private_image
+from backend.services.cloudinary_service import download_image_to_local
 from backend.services.utils import ensure_directories
 
 
@@ -18,9 +18,9 @@ def ensure_database_schema():
     except Exception:
         return
 
-    if "cloudinary_asset_id" not in columns:
+    if "cloudinary_secure_url" not in columns:
         db.session.execute(
-            text("ALTER TABLE students ADD COLUMN cloudinary_asset_id VARCHAR(256)")
+            text("ALTER TABLE students ADD COLUMN cloudinary_secure_url VARCHAR(512)")
         )
         db.session.commit()
 
@@ -35,14 +35,14 @@ def sync_student_profile_images():
     """
     Sync student profile images from Cloudinary on startup.
     
-    1. For students with cloudinary_asset_id and cloudinary_public_id, download from Cloudinary.
+    1. For students with cloudinary_secure_url and cloudinary_public_id, download from Cloudinary.
     2. Restore images to backend/uploads/profile/.
     3. Retrain LBPH face recognition model.
     """
     ensure_directories()
 
     students = Student.query.filter(
-        (Student.cloudinary_asset_id.isnot(None)) & (Student.cloudinary_public_id.isnot(None))
+        (Student.cloudinary_secure_url.isnot(None)) & (Student.cloudinary_public_id.isnot(None))
     ).all()
 
     downloaded_count = 0
@@ -54,7 +54,7 @@ def sync_student_profile_images():
             student.profile_image = local_path
             continue
         
-        if download_private_image(student.cloudinary_asset_id, student.cloudinary_public_id, local_path):
+        if download_image_to_local(student.cloudinary_secure_url, local_path):
             student.profile_image = local_path
             downloaded_count += 1
             print(f"[Sync] Downloaded profile image for {student.student_id}")

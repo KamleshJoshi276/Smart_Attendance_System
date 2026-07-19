@@ -1,7 +1,10 @@
 import os
 from dotenv import load_dotenv
+from zoneinfo import ZoneInfo
 
 load_dotenv()
+
+IST_TIMEZONE = ZoneInfo("Asia/Kolkata")
 
 
 def get_database_uri():

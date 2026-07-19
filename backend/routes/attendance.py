@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, date
+from zoneinfo import ZoneInfo
 
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
@@ -53,7 +54,7 @@ def mark_attendance():
             "message": "Student not found"
         }), 404
 
-    today = date.today()
+    today = datetime.now(ZoneInfo("Asia/Kolkata")).date()
 
     existing = Attendance.query.filter_by(
         student_id=student.id,
@@ -76,10 +77,11 @@ def mark_attendance():
         "attendance"
     )
 
+    ist_now = datetime.now(ZoneInfo("Asia/Kolkata"))
     attendance = Attendance(
         student_id=student.id,
         date=today,
-        time=datetime.now().time(),
+        time=ist_now.time(),
         image_path=image_path,
         latitude=latitude,
         longitude=longitude
@@ -203,7 +205,7 @@ def attendance_stats():
     total_students = Student.query.count()
 
     present_today = Attendance.query.filter(
-        Attendance.date == date.today()
+        Attendance.date == datetime.now(ZoneInfo("Asia/Kolkata")).date()
     ).count()
 
     absent_today = total_students - present_today

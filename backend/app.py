@@ -55,7 +55,8 @@ def create_app():
 
         db.session.commit()
 
-        sync_student_profile_images()
+        restored_images = sync_student_profile_images()
+        print(f"[Startup] Restored images: {restored_images}")
         train_recognizer()
 
     app.register_blueprint(auth_bp)

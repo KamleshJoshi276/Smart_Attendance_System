@@ -26,8 +26,6 @@ def decode_base64_image(image_base64: str) -> np.ndarray | None:
         return image
     except Exception:
         return None
-
-
 def extract_face(image: np.ndarray) -> np.ndarray | None:
     if image is None:
         return None
@@ -38,8 +36,6 @@ def extract_face(image: np.ndarray) -> np.ndarray | None:
     x, y, w, h = faces[0]
     face = gray[y:y+h, x:x+w]
     return cv2.resize(face, (200, 200))
-
-
 def load_label_map() -> dict[str, int] | None:
     if not os.path.exists(Config.FACE_LABELS_PATH):
         return None

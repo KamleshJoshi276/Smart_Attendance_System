@@ -66,3 +66,5 @@ def sync_student_profile_images():
         print(f"[Sync] Downloaded {downloaded_count} profile images from Cloudinary")
     elif any(student.profile_image for student in students):
         db.session.commit()
+
+    return downloaded_count
